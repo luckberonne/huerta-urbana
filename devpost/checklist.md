@@ -62,14 +62,14 @@ Resultado: el aprendiz probó la app y no pidió cambios (“todo bien, sigamos�
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
 - [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
 Activity and evidence: recap basado en evidencia: la verificación en el emulador detectó que `MainActivity.kt` había quedado vacío (compilaba y los 9 tests pasaban, pero la app se cerraba al abrir).
 Route and stops: ruta de referencia en el mapa (no recorrida en vivo): `domain/LettuceRules.kt > tasksFor`, `ui/today/TodayViewModel.kt > markWatered`, `ui/today/TodayScreen.kt > TaskCard`
 Edit outcome: not applicable
-Reflection: pending
+Reflection: offered, declined (“paso”)
 Activity mode: recap
 
 ## Revisions

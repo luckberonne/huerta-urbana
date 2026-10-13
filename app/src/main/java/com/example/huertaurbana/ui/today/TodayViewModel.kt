@@ -1,29 +1,39 @@
 package com.example.huertaurbana.ui.today
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.huertaurbana.data.HuertaDatabase
+import com.example.huertaurbana.data.SowingEntity
+import com.example.huertaurbana.data.WateringEntity
 import com.example.huertaurbana.domain.LettuceRules
 import com.example.huertaurbana.domain.Sowing
 import com.example.huertaurbana.domain.Task
 import com.example.huertaurbana.domain.Watering
 import java.time.LocalDate
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class TodayViewModel : ViewModel() {
-    private val _sowings = MutableStateFlow<List<Sowing>>(emptyList())
-    val sowings: StateFlow<List<Sowing>> = _sowings.asStateFlow()
+class TodayViewModel(application: Application) : AndroidViewModel(application) {
+    private val dao = HuertaDatabase.get(application).dao()
 
-    private val _waterings = MutableStateFlow<List<Watering>>(emptyList())
-    val waterings: StateFlow<List<Watering>> = _waterings.asStateFlow()
+    val sowings: StateFlow<List<Sowing>> = dao.observeSowings()
+        .map { list -> list.map { it.toDomain() } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    val waterings: StateFlow<List<Watering>> = dao.observeWaterings()
+        .map { list -> list.map { it.toDomain() } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun addSowing(date: LocalDate) {
-        _sowings.update { it + Sowing(id = (it.maxOfOrNull { s -> s.id } ?: 0L) + 1, date = date) }
+        viewModelScope.launch { dao.insertSowing(SowingEntity(dateEpochDay = date.toEpochDay())) }
     }
 
     fun markWatered(sowingId: Long, today: LocalDate = LocalDate.now()) {
-        _waterings.update { it + Watering(sowingId, today) }
+        viewModelScope.launch { dao.insertWatering(WateringEntity(sowingId = sowingId, dateEpochDay = today.toEpochDay())) }
     }
 
     fun tasksToday(sowings: List<Sowing>, waterings: List<Watering>, today: LocalDate = LocalDate.now()): List<Task> =

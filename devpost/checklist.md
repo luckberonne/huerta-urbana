@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Marcá "Regar lechuga" como regada y confirmá que queda hecha. Cargá una siembra con una fecha de hace 3 días y mirá que el riego aparece como atrasado.
   Commit: `Add mark as watered and overdue watering`
 
-- [ ] **3. La app se acuerda de lo cargado al cerrarla**
+- [x] **3. La app se acuerda de lo cargado al cerrarla**
   Becomes usable: Cerrás y abrís la app y las siembras y los riegos marcados siguen ahí.
   Why now: Es el primer lugar donde puede fallar el modelo de datos y conviene descubrirlo temprano.
   PRD ref: `prd.md > States and Boundaries` (persistencia), `prd.md > The Core Journey` (paso 8)

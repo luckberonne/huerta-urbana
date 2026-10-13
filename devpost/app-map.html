@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa de Huerta Urbana</title>
+<style>
+  :root { --bg:#f6f3e8; --fg:#1f3a26; --card:#dcebd7; --accent:#3e7c4a; --water:#4f8fa3; --earth:#8a6a4b; }
+  body { font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); max-width:760px; margin:0 auto; padding:24px 16px 48px; line-height:1.5; }
+  h1 { margin-bottom:4px } h2 { margin-top:32px; border-bottom:2px solid var(--card); padding-bottom:4px }
+  .card { background:var(--card); border-radius:16px; padding:12px 16px; margin:10px 0 }
+  code { background:#fff8; padding:1px 5px; border-radius:6px; font-size:.92em }
+  .muted { color:var(--earth); font-size:.9em }
+  svg { width:100%; height:auto }
+</style>
+</head>
+<body>
+<h1>Mapa de Huerta Urbana</h1>
+<p class="muted">Instantánea del código en el commit <code>533ac8f</code>. Puede quedar desactualizada si el código cambia.</p>
+
+<h2>Qué es</h2>
+<p>Una app Android (Kotlin + Jetpack Compose) que te dice qué hacer hoy en tu huerta: regar la lechuga cada 2 días y cosecharla a los 45. Guarda todo en el teléfono con Room, sin cuentas ni servidor. Tiene dos pestañas: <b>Hoy</b> y <b>Calendario</b>.</p>
+
+<h2>Una acción, de punta a punta: tocar “Regada”</h2>
+<svg viewBox="0 0 720 150" role="img" aria-label="Tocar Regada: pantalla, ViewModel, base de datos, regla, pantalla">
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#3e7c4a"/></marker></defs>
+  <g font-family="system-ui" font-size="12" text-anchor="middle">
+    <rect x="4" y="40" width="120" height="70" rx="12" fill="#dcebd7" stroke="#3e7c4a"/><text x="64" y="68">Botón “Regada”</text><text x="64" y="86" font-size="10">TodayScreen.kt</text>
+    <rect x="152" y="40" width="120" height="70" rx="12" fill="#dcebd7" stroke="#3e7c4a"/><text x="212" y="68">markWatered()</text><text x="212" y="86" font-size="10">TodayViewModel.kt</text>
+    <rect x="300" y="40" width="120" height="70" rx="12" fill="#dcebd7" stroke="#3e7c4a"/><text x="360" y="68">insertWatering()</text><text x="360" y="86" font-size="10">HuertaDao.kt (Room)</text>
+    <rect x="448" y="40" width="120" height="70" rx="12" fill="#dcebd7" stroke="#3e7c4a"/><text x="508" y="68">tasksFor()</text><text x="508" y="86" font-size="10">LettuceRules.kt</text>
+    <rect x="596" y="40" width="120" height="70" rx="12" fill="#dcebd7" stroke="#3e7c4a"/><text x="656" y="68">Tarjeta tachada ✓</text><text x="656" y="86" font-size="10">TaskCard</text>
+  </g>
+  <g stroke="#3e7c4a" stroke-width="2" marker-end="url(#a)"><line x1="126" y1="75" x2="150" y2="75"/><line x1="274" y1="75" x2="298" y2="75"/><line x1="422" y1="75" x2="446" y2="75"/><line x1="570" y1="75" x2="594" y2="75"/></g>
+</svg>
+<p class="muted">Room avisa solo cuando cambia la base (Flow), así que la pantalla se recalcula sin que nadie la refresque.</p>
+
+<h2>Ruta de lectura (referencia, 3 paradas)</h2>
+<div class="card"><b>1. La regla</b> — <code>app/src/main/java/com/example/huertaurbana/domain/LettuceRules.kt</code>, función <code>tasksFor</code>. Decide qué toca hoy: riego cada 2 días, cosecha el día 45, riego atrasado y hecho.</div>
+<div class="card"><b>2. Guardar el riego</b> — <code>ui/today/TodayViewModel.kt</code>, <code>markWatered</code>, que llama a <code>HuertaDao.insertWatering</code> en <code>data/HuertaDao.kt</code>.</div>
+<div class="card"><b>3. Mostrarlo</b> — <code>ui/today/TodayScreen.kt</code>, <code>TaskCard</code>. Cambia el color si está atrasada y tacha el título si está hecha.</div>
+
+<h2>Para cambiar esto, empezá acá</h2>
+<ul>
+  <li><b>Cada cuántos días se riega / a los cuántos se cosecha:</b> <code>WATER_EVERY_DAYS</code> y <code>HARVEST_AFTER_DAYS</code> en <code>LettuceRules.kt</code>.</li>
+  <li><b>Colores y formas:</b> <code>ui/theme/Theme.kt</code>.</li>
+  <li><b>El calendario:</b> <code>ui/calendar/CalendarScreen.kt</code>, <code>CalendarScreen</code>; las marcas salen de <code>LettuceRules.marksOn</code>.</li>
+  <li><b>Qué se guarda:</b> <code>data/Entities.kt</code>.</li>
+  <li><b>Sumar otro cultivo:</b> hoy la planta es fija (lechuga). Habría que agregar un campo de planta a <code>SowingEntity</code> y reglas por cultivo.</li>
+</ul>
+
+<h2>Una práctica para reutilizar</h2>
+<div class="card">
+  <b>Verificar en la app corriendo, no solo compilando.</b> En el paso del calendario reescribí <code>MainActivity.kt</code> y el archivo quedó vacío. El código compilaba y los 9 tests pasaban, pero la app se cerraba al abrir (<code>ClassNotFoundException: MainActivity</code>). Lo encontró abrir la app en el emulador.
+  <br>Para otro proyecto: además de los tests, definí una comprobación que ejecute el recorrido principal en la app real, y correla en cada paso.
+</div>
+
+<h2>Cómo volver a correrla</h2>
+<p>Con JDK 21 instalado: <code>./gradlew installDebug</code> y abrir <b>Huerta Urbana</b> en el emulador <code>Pixel_9</code>. Tests: <code>./gradlew testDebugUnitTest</code>.</p>
+</body>
+</html>

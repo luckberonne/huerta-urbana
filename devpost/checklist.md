@@ -52,23 +52,25 @@ Build mode: fast
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — después del paso 1 (lista de hoy y formulario)
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
+
+Resultado: el aprendiz probó la app y no pidió cambios (“todo bien, sigamos”). Otros cultivos: investigados, diferidos fuera del POC.
 
 ## Code Tour and App Map
 
 - [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
 - [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: pending
-Route and stops: pending
-Edit outcome: pending
+Activity and evidence: recap basado en evidencia: la verificación en el emulador detectó que `MainActivity.kt` había quedado vacío (compilaba y los 9 tests pasaban, pero la app se cerraba al abrir).
+Route and stops: ruta de referencia en el mapa (no recorrida en vivo): `domain/LettuceRules.kt > tasksFor`, `ui/today/TodayViewModel.kt > markWatered`, `ui/today/TodayScreen.kt > TaskCard`
+Edit outcome: not applicable
 Reflection: pending
-Activity mode: pending
+Activity mode: recap
 
 ## Revisions
 

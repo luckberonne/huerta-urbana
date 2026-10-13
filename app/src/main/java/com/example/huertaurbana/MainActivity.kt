@@ -1,12 +1,12 @@
 package com.example.huertaurbana
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.huertaurbana.ui.AppRoot
 import com.example.huertaurbana.ui.theme.HuertaUrbanaTheme
-import com.example.huertaurbana.ui.today.TodayScreen
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HuertaUrbanaTheme { TodayScreen() }
+            HuertaUrbanaTheme { AppRoot() }
         }
     }
 }

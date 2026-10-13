@@ -41,4 +41,16 @@ object LettuceRules {
                 else -> null
             }
         }
+
+    /** Marcas de un día para el calendario: riego programado y/o cosecha, de cualquier siembra. */
+    fun marksOn(day: LocalDate, sowings: List<Sowing>): Set<TaskType> =
+        sowings.mapNotNull { sowing ->
+            val daysSince = ChronoUnit.DAYS.between(sowing.date, day)
+            when {
+                daysSince < 0 -> null
+                daysSince == HARVEST_AFTER_DAYS.toLong() -> TaskType.HARVEST
+                daysSince < HARVEST_AFTER_DAYS && daysSince % WATER_EVERY_DAYS == 0L -> TaskType.WATER
+                else -> null
+            }
+        }.toSet()
 }

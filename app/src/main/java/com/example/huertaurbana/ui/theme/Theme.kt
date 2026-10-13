@@ -18,6 +18,8 @@ val SoftGreen = Color(0xFFDCEBD7)
 val Cream = Color(0xFFF6F3E8)
 val Earth = Color(0xFF8A6A4B)
 val DeepGreen = Color(0xFF1F3A26)
+val WaterBlue = Color(0xFF4F8FA3)
+val HarvestOrange = Color(0xFFD9822B)
 
 private val Colors = lightColorScheme(
     primary = LeafGreen,

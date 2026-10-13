@@ -62,4 +62,21 @@ class LettuceRulesTest {
         val task = LettuceRules.tasksFor(day(2), sowings, listOf(Watering(99, day(2)))).single()
         assertFalse(task.done)
     }
+
+    @Test
+    fun calendarMarksWateringEveryTwoDaysAndHarvestOnDay45() {
+        assertEquals(setOf(TaskType.WATER), LettuceRules.marksOn(day(0), sowings))
+        assertTrue(LettuceRules.marksOn(day(1), sowings).isEmpty())
+        assertEquals(setOf(TaskType.WATER), LettuceRules.marksOn(day(44), sowings))
+        assertEquals(setOf(TaskType.HARVEST), LettuceRules.marksOn(day(45), sowings))
+        assertTrue(LettuceRules.marksOn(day(46), sowings).isEmpty())
+        assertTrue(LettuceRules.marksOn(day(-2), sowings).isEmpty())
+    }
+
+    @Test
+    fun calendarMarksSeveralSowingsOnTheSameDay() {
+        val two = sowings + Sowing(2, day(1))
+        assertEquals(setOf(TaskType.WATER, TaskType.HARVEST), LettuceRules.marksOn(day(45), two))
+        assertEquals(setOf(TaskType.WATER), LettuceRules.marksOn(day(3), two))
+    }
 }

@@ -25,7 +25,8 @@ PRD ref: `prd.md > The Core Journey`.
 ## Stack
 - **Kotlin + Jetpack Compose** (interfaz): [Compose](https://developer.android.com/jetpack/compose). Estándar de Android, corre en el emulador ya instalado.
 - **Room** (datos locales): [Room](https://developer.android.com/training/data-storage/room). Hace que la app recuerde lo cargado sin servidor.
-- **Navigation Compose**: [Navigation](https://developer.android.com/jetpack/compose/navigation). Moverse entre lista y calendario.
+- **Pestañas simples de Material 3** (barra inferior Hoy / Calendario) para moverse entre lista y calendario, en lugar de Navigation Compose: con dos pantallas no justifica la dependencia.
+- **KSP** (procesador de código que usa Room para generar la base de datos).
 - **Gradle wrapper** para compilar: se genera con el proyecto. Los números de versión se verifican en el primer paso del build; no están confirmados todavía.
 - Tradeoff aceptado: hay que instalar un JDK (JDK 21) y el primer build de Gradle es lento.
 

@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Cargá una siembra, cerrá la app del todo, volvé a abrirla y confirmá que todo sigue.
   Commit: `Persist sowings and waterings with Room`
 
-- [ ] **4. Ves los riegos y la cosecha en el calendario**
+- [x] **4. Ves los riegos y la cosecha en el calendario**
   Becomes usable: Una pantalla de calendario del mes con las marcas de riego y el día de cosecha, y navegación entre lista y calendario.
   Why now: Es la segunda vista y depende de que los datos y las reglas ya estén firmes.
   PRD ref: `prd.md > Features and Behavior > Calendario`, `prd.md > The Core Journey` (paso 6), `prd.md > Screens and Layout`
@@ -73,3 +73,4 @@ Activity mode: pending
 ## Revisions
 
 - Tarjetas de tarea con fecha de siembra y número de día, y app en español (es-AR) — feedback del checkpoint temprano: el selector de fecha salía en inglés y las tarjetas no distinguían siembras.
+- Navegación entre Hoy y Calendario con dos pestañas simples (estado en memoria) en lugar de Navigation Compose — con solo dos pantallas no justifica sumar la dependencia; el spec la listaba en Stack.

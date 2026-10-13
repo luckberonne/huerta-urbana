@@ -3,6 +3,7 @@ package com.example.huertaurbana.ui.today
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +43,8 @@ private val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 fun TodayScreen(viewModel: TodayViewModel = viewModel()) {
     val sowings by viewModel.sowings.collectAsStateWithLifecycle()
     var showForm by remember { mutableStateOf(false) }
-    val tasks = viewModel.tasksToday(sowings)
+    val waterings by viewModel.waterings.collectAsStateWithLifecycle()
+    val tasks = viewModel.tasksToday(sowings, waterings)
 
     Scaffold(
         topBar = {
@@ -65,7 +68,9 @@ fun TodayScreen(viewModel: TodayViewModel = viewModel()) {
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         contentPadding = PaddingValues(bottom = 8.dp),
                     ) {
-                        items(tasks, key = { "${it.sowingId}-${it.type}" }) { TaskCard(it) }
+                        items(tasks, key = { "${it.sowingId}-${it.type}" }) {
+                            TaskCard(it, onWatered = { viewModel.markWatered(it.sowingId) })
+                        }
                     }
                 }
             }
@@ -88,22 +93,36 @@ fun TodayScreen(viewModel: TodayViewModel = viewModel()) {
 }
 
 @Composable
-private fun TaskCard(task: Task) {
-    val text = when (task.type) {
+private fun TaskCard(task: Task, onWatered: () -> Unit) {
+    val title = when (task.type) {
         TaskType.WATER -> "Regar lechuga"
         TaskType.HARVEST -> "Cosechar lechuga"
     }
+    val detail = when {
+        task.type == TaskType.HARVEST ->
+            "Sembrada el ${task.sowedOn.format(dateFormat)} · ¡ya pasaron ${task.dayNumber} días!"
+        task.overdue ->
+            "Atrasada desde el ${task.dueDate.format(dateFormat)} · sembrada el ${task.sowedOn.format(dateFormat)}"
+        else ->
+            "Sembrada el ${task.sowedOn.format(dateFormat)} · día ${task.dayNumber} de ${LettuceRules.HARVEST_AFTER_DAYS}"
+    }
+    val container = if (task.overdue) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        colors = CardDefaults.cardColors(containerColor = container),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text, style = MaterialTheme.typography.titleMedium)
-            val detail = when (task.type) {
-                TaskType.WATER -> "Sembrada el ${task.sowedOn.format(dateFormat)} · día ${task.dayNumber} de ${LettuceRules.HARVEST_AFTER_DAYS}"
-                TaskType.HARVEST -> "Sembrada el ${task.sowedOn.format(dateFormat)} · ¡ya pasaron ${task.dayNumber} días!"
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    if (task.done) "$title ✓" else title,
+                    style = MaterialTheme.typography.titleMedium,
+                    textDecoration = if (task.done) TextDecoration.LineThrough else null,
+                )
+                Text(detail, style = MaterialTheme.typography.bodyMedium)
             }
-            Text(detail, style = MaterialTheme.typography.bodyMedium)
+            if (task.type == TaskType.WATER && !task.done) {
+                Button(onClick = onWatered) { Text("Regada") }
+            }
         }
     }
 }

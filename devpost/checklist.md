@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Abrí la app, tocá "Agregar siembra", poné una fecha de hoy y confirmá que ves "Regar lechuga". Decime si el aspecto es el natural y verde que imaginabas.
   Commit: `Add today list, sowing form and lettuce rules`
 
-- [ ] **2. Marcás el riego como hecho y ves el riego atrasado**
+- [x] **2. Marcás el riego como hecho y ves el riego atrasado**
   Becomes usable: Marcar "Regar lechuga" como regada y ver que queda hecha. Si ayer no regaste, la tarea sigue pendiente hoy y aparece como atrasada.
   Why now: Cierra el bucle central de uso diario antes de sumar persistencia, y deja la regla completa.
   PRD ref: `prd.md > The Core Journey` (paso 5), `prd.md > States and Boundaries` (riego atrasado)

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,9 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.format.DateTimeFormatter
+import com.example.huertaurbana.domain.LettuceRules
 import com.example.huertaurbana.domain.Task
 import com.example.huertaurbana.domain.TaskType
 import com.example.huertaurbana.ui.sowing.SowingDialog
+
+private val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,8 +97,13 @@ private fun TaskCard(task: Task) {
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(text, style = MaterialTheme.typography.titleMedium)
+            val detail = when (task.type) {
+                TaskType.WATER -> "Sembrada el ${task.sowedOn.format(dateFormat)} · día ${task.dayNumber} de ${LettuceRules.HARVEST_AFTER_DAYS}"
+                TaskType.HARVEST -> "Sembrada el ${task.sowedOn.format(dateFormat)} · ¡ya pasaron ${task.dayNumber} días!"
+            }
+            Text(detail, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

@@ -12,7 +12,7 @@ class LettuceRulesTest {
     @Test
     fun watersOnSowingDayAndEveryTwoDays() {
         listOf(0L, 2L, 4L, 44L).forEach {
-            assertEquals(listOf(Task(1, TaskType.WATER, sown.plusDays(it))), LettuceRules.tasksFor(sown.plusDays(it), sowings))
+            assertEquals(listOf(Task(1, TaskType.WATER, sown.plusDays(it), sown)), LettuceRules.tasksFor(sown.plusDays(it), sowings))
         }
     }
 
@@ -25,7 +25,12 @@ class LettuceRulesTest {
 
     @Test
     fun harvestsOnDay45() {
-        assertEquals(listOf(Task(1, TaskType.HARVEST, sown.plusDays(45))), LettuceRules.tasksFor(sown.plusDays(45), sowings))
+        assertEquals(listOf(Task(1, TaskType.HARVEST, sown.plusDays(45), sown)), LettuceRules.tasksFor(sown.plusDays(45), sowings))
+    }
+
+    @Test
+    fun taskKnowsItsDayNumber() {
+        assertEquals(12, LettuceRules.tasksFor(sown.plusDays(12), sowings).single().dayNumber)
     }
 
     @Test

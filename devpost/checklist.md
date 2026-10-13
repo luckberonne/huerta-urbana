@@ -51,7 +51,7 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — después del paso 1 (lista de hoy y formulario)
+- [x] Early usable behavior explored — después del paso 1 (lista de hoy y formulario)
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
@@ -71,3 +71,5 @@ Reflection: pending
 Activity mode: pending
 
 ## Revisions
+
+- Tarjetas de tarea con fecha de siembra y número de día, y app en español (es-AR) — feedback del checkpoint temprano: el selector de fecha salía en inglés y las tarjetas no distinguían siembras.
